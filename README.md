@@ -9,6 +9,14 @@
 
 一个轻量级的 TuShare Pro API TypeScript SDK，零依赖设计，支持 Node.js 和浏览器环境。
 
+## 📚 文档导航
+
+- [📖 API 参考文档](#api-文档) - 完整的接口说明和参数详情
+- [💡 使用示例](./EXAMPLES.md) - 详细的代码示例和最佳实践
+- [🚀 快速演示](#快速体验) - 一键运行所有功能演示
+- [⚙️ 环境配置](#环境配置) - Token 设置和环境准备
+- [🔧 开发指南](./CLAUDE.md) - 贡献代码和开发说明
+
 ## 特性
 
 ![Zero Dependencies](https://img.shields.io/badge/dependencies-0-green.svg)
@@ -36,7 +44,14 @@ npm install undici
 ## 快速开始
 
 ```typescript
-import { init, getRealtimeQuote, getDaily } from 'tushare-js-sdk';
+import { 
+  init, 
+  getRealtimeQuote, 
+  getDaily, 
+  getTradeCal, 
+  getStockBasic,
+  getMinuteData 
+} from 'tushare-js-sdk';
 
 // 初始化（使用你的 TuShare Pro token）
 init(process.env.TUSHARE_TOKEN!);
@@ -51,6 +66,21 @@ const dailyBars = await getDaily('600519.SH', {
   adj: 'qfq' 
 });
 console.log(`获取到 ${dailyBars.length} 条日线数据`);
+
+// 获取交易日历
+const tradeCal = await getTradeCal({ 
+  start_date: '20240101', 
+  end_date: '20241231' 
+});
+
+// 获取股票列表
+const stocks = await getStockBasic({ market: '主板' });
+
+// 获取分钟数据
+const minuteData = await getMinuteData('600519.SH', { 
+  freq: '5min', 
+  start_date: '20240101' 
+});
 ```
 
 ## 环境配置
@@ -66,6 +96,32 @@ TUSHARE_TOKEN=你的token
 ```
 
 3. 确保 `.env` 文件已被 `.gitignore` 忽略，不会被提交到代码仓库。
+
+## 快速体验
+
+运行完整功能演示：
+
+```bash
+npm run example
+```
+
+查看详细使用示例：[EXAMPLES.md](./EXAMPLES.md)
+
+## 🎯 接口快速参考
+
+| 功能分类 | 接口名称 | 说明 | 权限要求 |
+|---------|----------|------|----------|
+| **基础数据** | `getTradeCal` | 交易日历 | 2000积分 |
+| | `getStockBasic` | 股票列表 | 2000积分 |
+| **行情数据** | `getDaily` | 日线数据 | 基础权限 |
+| | `getMinuteData` | 分钟数据 | VIP权限 |
+| | `getWeeklyData` | 周线数据 | 中级权限 |
+| | `getMonthlyData` | 月线数据 | 中级权限 |
+| | `getRealtimeQuote` | 实时行情 | VIP权限 |
+| **高级功能** | `getIndexWeight` | 指数成分 | 高级权限 |
+| | `call` | 通用接口 | 依接口而定 |
+
+> 💡 **提示**: 不同接口有不同的权限要求和调用限制，详见 [权限说明](#权限说明) 或访问 [TuShare权限文档](https://tushare.pro/document/1?doc_id=108)
 
 ## API 文档
 
@@ -140,13 +196,22 @@ interface DailyBar {
 ### 股票列表
 
 ```typescript
-getStockBasic(market?: MarketType): Promise<StockBasic[]>
+getStockBasic(options?: GetStockBasicOptions): Promise<StockBasic[]>
 ```
 
 获取股票基础信息列表。
 
 **参数：**
-- `market` - 可选，市场类型（`'主板'` | `'科创板'` | `'创业板'`）
+```typescript
+interface GetStockBasicOptions {
+  ts_code?: string;           // 股票代码
+  name?: string;              // 股票名称
+  exchange?: 'SSE' | 'SZSE';  // 交易所
+  market?: MarketType;        // 市场类型（'主板' | '科创板' | '创业板'）
+  list_status?: 'L' | 'D' | 'P';  // 上市状态
+  is_hs?: 'N' | 'H' | 'S';    // 沪深港通标识
+}
+```
 
 ### 指数成分
 
@@ -159,6 +224,64 @@ getIndexWeight(indexCode: string, date?: string): Promise<IndexWeight[]>
 **参数：**
 - `indexCode` - 指数代码
 - `date` - 可选，交易日期（格式：YYYYMMDD）
+
+### 交易日历
+
+```typescript
+getTradeCal(options?: GetTradeCalOptions): Promise<TradeCal[]>
+```
+
+获取交易日历数据。
+
+**参数：**
+```typescript
+interface GetTradeCalOptions {
+  exchange?: string;     // 交易所代码
+  start_date?: string;   // 开始日期（YYYYMMDD）
+  end_date?: string;     // 结束日期（YYYYMMDD）
+  is_open?: '0' | '1';   // 是否交易日
+}
+```
+
+**返回：**
+```typescript
+interface TradeCal {
+  exchange: string;      // 交易所
+  cal_date: string;      // 日期
+  is_open: number;       // 是否交易日（1-是，0-否）
+  pretrade_date: string; // 上一交易日
+}
+```
+
+### 分钟数据
+
+```typescript
+getMinuteData(tsCode: string, options?: GetMinuteOptions): Promise<MinuteBar[]>
+```
+
+获取分钟级别行情数据。
+
+**参数：**
+- `tsCode` - 股票代码
+- `options` - 可选参数
+  - `freq?: '1min' | '5min' | '15min' | '30min' | '60min'` - 频率（默认1分钟）
+  - `start_date?: string` - 开始日期（YYYYMMDD）
+  - `end_date?: string` - 结束日期（YYYYMMDD）
+
+### 周线/月线数据
+
+```typescript
+getWeeklyData(tsCode: string, options?: GetWeeklyMonthlyOptions): Promise<WeeklyMonthlyBar[]>
+getMonthlyData(tsCode: string, options?: GetWeeklyMonthlyOptions): Promise<WeeklyMonthlyBar[]>
+```
+
+获取周线或月线行情数据。
+
+**参数：**
+- `tsCode` - 股票代码
+- `options` - 可选参数
+  - `start_date?: string` - 开始日期（YYYYMMDD）
+  - `end_date?: string` - 结束日期（YYYYMMDD）
 
 ### 通用接口
 
@@ -227,14 +350,28 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 [![GitHub issues](https://img.shields.io/github/issues/Ideas-X/tushare-js-sdk.svg)](https://github.com/Ideas-X/tushare-js-sdk/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/Ideas-X/tushare-js-sdk.svg)](https://github.com/Ideas-X/tushare-js-sdk/pulls)
 
-## 链接
+## 相关链接
 
+### 📚 文档资源
+- [📖 完整使用示例](./EXAMPLES.md) - 详细的代码示例和最佳实践
+- [🔧 开发指南](./CLAUDE.md) - SDK 架构说明和开发文档
+- [⚙️ 权限说明](https://tushare.pro/document/1?doc_id=108) - TuShare Pro 权限详情
+
+### 🔗 项目链接
 - 📦 [npm package](https://www.npmjs.com/package/tushare-js-sdk)
 - 📖 [GitHub repository](https://github.com/Ideas-X/tushare-js-sdk)
 - 🐛 [报告问题](https://github.com/Ideas-X/tushare-js-sdk/issues)
 - 🔧 [TuShare Pro 官网](https://tushare.pro)
 
 ## 更新日志
+
+### 1.1.0 (Latest)
+- 🆕 **新增基础数据接口**: 交易日历 (`getTradeCal`)
+- 🔧 **增强股票基础信息**: 支持更多筛选参数 (`getStockBasic`)
+- 📈 **新增行情数据接口**: 分钟数据 (`getMinuteData`)、周线数据 (`getWeeklyData`)、月线数据 (`getMonthlyData`)
+- 📖 **完善文档**: 新增 [EXAMPLES.md](./EXAMPLES.md) 详细使用示例
+- 🧪 **全面测试**: 为所有新接口添加完整测试覆盖
+- 🎯 **权限管理**: 明确各接口权限要求和调用限制
 
 ### 1.0.0
 - 🎉 初始版本发布
