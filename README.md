@@ -1,8 +1,19 @@
-# @ideasx/tushare-js-sdk
+# tushare-js-sdk
+
+[![npm version](https://badge.fury.io/js/tushare-js-sdk.svg)](https://badge.fury.io/js/tushare-js-sdk)
+[![npm downloads](https://img.shields.io/npm/dm/tushare-js-sdk.svg)](https://www.npmjs.com/package/tushare-js-sdk)
+[![GitHub license](https://img.shields.io/github/license/Ideas-X/tushare-js-sdk.svg)](https://github.com/Ideas-X/tushare-js-sdk/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/Ideas-X/tushare-js-sdk.svg?style=social&label=Star)](https://github.com/Ideas-X/tushare-js-sdk)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/node/v/tushare-js-sdk.svg)](https://nodejs.org/)
 
 一个轻量级的 TuShare Pro API TypeScript SDK，零依赖设计，支持 Node.js 和浏览器环境。
 
 ## 特性
+
+![Zero Dependencies](https://img.shields.io/badge/dependencies-0-green.svg)
+![Bundle Size](https://img.shields.io/bundlephobia/minzip/tushare-js-sdk.svg)
+![Tree Shaking](https://img.shields.io/badge/tree%20shaking-supported-green.svg)
 
 - 🚀 **轻量级** - 仅依赖原生 `fetch` API，可选集成 `undici`
 - 📦 **零配置** - 仅需提供 TuShare Pro token，即可快速接入
@@ -207,16 +218,30 @@ try {
 
 ## 许可证
 
-MIT License
+MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request！
 
+[![GitHub issues](https://img.shields.io/github/issues/Ideas-X/tushare-js-sdk.svg)](https://github.com/Ideas-X/tushare-js-sdk/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/Ideas-X/tushare-js-sdk.svg)](https://github.com/Ideas-X/tushare-js-sdk/pulls)
+
+## 链接
+
+- 📦 [npm package](https://www.npmjs.com/package/tushare-js-sdk)
+- 📖 [GitHub repository](https://github.com/Ideas-X/tushare-js-sdk)
+- 🐛 [报告问题](https://github.com/Ideas-X/tushare-js-sdk/issues)
+- 🔧 [TuShare Pro 官网](https://tushare.pro)
+
 ## 更新日志
 
 ### 1.0.0
-- 初始版本发布
-- 支持实时行情、日线数据、股票列表、指数成分等核心功能
-- 完整的 TypeScript 类型定义
-- 跨平台支持（Node.js + 浏览器）
+- 🎉 初始版本发布
+- ✅ 支持实时行情、日线数据、股票列表、指数成分等核心功能
+- 📘 完整的 TypeScript 类型定义
+- 🌐 跨平台支持（Node.js + 浏览器）
+
+---
+
+如果这个项目对你有帮助，请给个 ⭐ Star！
