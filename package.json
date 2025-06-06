@@ -1,0 +1,58 @@
+{
+  "name": "@ideasx/tushare-js-sdk",
+  "version": "1.0.0",
+  "description": "A lightweight TypeScript SDK for TuShare Pro API with zero dependencies",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "tushare",
+    "finance",
+    "stock",
+    "market-data",
+    "typescript",
+    "sdk"
+  ],
+  "author": "ideasx",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "dotenv": "^16.5.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "undici": "^7.10.0"
+  },
+  "peerDependencies": {
+    "undici": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "undici": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
