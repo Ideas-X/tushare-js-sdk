@@ -13,7 +13,7 @@
 ## 安装
 
 ```bash
-npm install @ideasx/tushare-js-sdk
+npm install tushare-js-sdk
 ```
 
 对于 Node.js < 18 环境，推荐安装 undici：
@@ -25,7 +25,7 @@ npm install undici
 ## 快速开始
 
 ```typescript
-import { init, getRealtimeQuote, getDaily } from '@ideasx/tushare-js-sdk';
+import { init, getRealtimeQuote, getDaily } from 'tushare-js-sdk';
 
 // 初始化（使用你的 TuShare Pro token）
 init(process.env.TUSHARE_TOKEN!);
